@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cardápio - Aki Tem Sport Bar</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      padding-top: 60px;
+      overflow-x: hidden;
+      background: #000;
+      font-family: Arial, sans-serif;
+      color: #d62828;
+    }
+    .background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      overflow: hidden;
+    }
+    .background-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: rotate(-1.5deg) scale(1.05);
+      filter: blur(5px);
+    }
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.6);
+      padding: 2rem 1rem;
+      min-height: 100vh;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .logo {
+      max-width: 250px;
+      margin: 0 auto 2rem;
+      display: block;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .section-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin: 2rem 0 1rem;
+    }
+    h2 {
+      border-bottom: 2px solid #ffba08;
+      color: #d62828;
+      padding-bottom: 0.5rem;
+      margin-top: 2rem;
+    }
+    .item {
+      margin-bottom: 1.5rem;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+    .item-name {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #000;
+    }
+    .item-description {
+      font-style: italic;
+      color: #555;
+    }
+    .item-price {
+      color: #d62828;
+      font-weight: bold;
+    }
+
+    /* Estilização do Menu Deslizante */
+    .menu-btn {
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #d62828;
+  position: fixed;
+  top: 15px;
+  right: 15px; /* Agora fixado no lado direito */
+  z-index: 1001;
+}
+
+
+   
+    .menu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 250px; /* Largura fixa */
+  height: 100%;
+  background: #fff;
+  z-index: 999;
+  transition: left 0.3s ease-in-out;
+  padding: 1rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+}
+
+.menu.open {
+  left: 0;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Alinha à esquerda */
+  padding-left: 1.70rem; /* Afastar da esquerda */
+  height: 61px;
+  line-height: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 249, 243, 0.9);
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #d62828;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+  .top-bar {
+    font-size: 1.0rem;
+    padding-left: 1rem; /* Menor afastamento no celular */
+  }
+  .top-bar h1 {
+    font-size: 1.1rem;
+  }
+}
+
+
+.menu-btn {
+  position: absolute;
+  top: 50%;
+  right: 15px; /* Posiciona o botão sobre a barra */
+  transform: translateY(-50%);
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #d62828;
+}
+
+
+    .menu a {
+      display: block;
+      color: #c0392b;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0.8rem 0;
+      padding: 0.5rem;
+      border-radius: 5px;
+      transition: background 0.2s;
+    }
+
+    .menu a:hover {
+      background-color: #ffd6a5;
+      color: #000;
+    }
+
+    .close-btn {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: #c0392b;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+
+    /* Botão "Voltar ao Topo" */
+    #btnTopo {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 100;
+      background-color: #e60000;
+      color: white;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    #btnTopo:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-bar">
+  <h1>AKI TEM SPORT BAR</h1>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</header>
+
+
+  <div class="menu" id="menu">
+   <button class="close-btn" onclick="toggleMenu()"></button>
+    <a href="#saladas">Saladas</a>
+    <a href="#porcoes-frias">Porções Frias</a>
+    <a href="#di-buteco">Di Buteco</a>
+    <a href="#pasteis">Pasteis</a>
+    <a href="#porcoes-quentes">Porções Quentes</a>
+    <a href="#aki-na-brasa">Carnes na Brasa</a>
+    <a href="#a-la-carte">À La Carte</a>
+    <a href="#prato-kids">Pratos Kids</a>
+    <a href="#acompanhamentos">Acompanhamentos</a>
+    <a href="#hamburgueres-autenticos">Hambúrgueres</a>
+    <a href="#sobremesas-final">Sobremesas</a>
+    <a href="#chopp">Chopp</a>
+    <a href="#cerveja600ml">Cervejas 600ml</a>
+    <a href="#long-necks">Long Necks</a>
+    <a href="#nao-alcoolicos">Bebidas Não Alcoólicas</a>
+    <a href="#sucos-500ml">Sucos 500ml</a>
+    <a href="#drinks-semalcool">Drinks Sem Álcool</a>
+    <a href="#drinks-classicos">Drinks Clássicos</a>
+    <a href="#caipirinhas">Caipirinhas Malibu</a>
+    <a href="#drinks-tematicos">Drinks Temáticos</a>
+    <a href="#shots">Shots</a>
+    <a href="#gin-tonica">Gin & Tônica</a>
+    <a href="#vinhos">Vinhos</a>
+    <a href="#destilados">Destilados</a>
+  </div>
+
+  <div class="background-image">
+    <img alt="Fundo Aki Tem" src="fundoia2desfo.jpg" loading="lazy" />
+  </div>
+
+  <div class="overlay">
+    <img alt="Logo Aki Tem Sport Bar" class="logo" src="akitemfundo.png" loading="lazy" />
+    <div class="container">
+      <!-- Seção: SALADAS -->
+<h2 id="saladas">SALADAS</h2>
+<img alt="Imagem Saladas" class="section-image" src="saladas.jpg" loading="lazy" />
+<div class="item">
+  <div class="item-name">SALADA DE CARPACCIO AKI TEM</div>
+  <div class="item-description">
+    Carpaccio, molho de alcaparra da casa, alface, rúcula, tomate, palmito e parmesão, Finas<br>
+    lâminas de carpaccio sobre folhas frescas.
+  </div>
+  <div class="item-price">R$ 77,90</div>
+</div>
+<div class="item">
+  <div class="item-name">SALADA DO CHEF</div>
+  <div class="item-description">
+    Rúcula, azeitona verde, ovo de codorna, palmito, tomate cereja e molho especial da casa. A criação<br>
+    exclusiva da casa, onde cada ingrediente foi escolhido a dedo.
+  </div>
+  <div class="item-price">R$ 69,90</div>
+</div>
+<div class="item">
+  <div class="item-name">SALADA CAESAR</div>
+  <div class="item-description">
+    Folhas verdes, peito de frango, tomate cereja, cebola roxa, croutons e molho Caesar.
+  </div>
+  <div class="item-price">R$ 49,90</div>
+</div>
+<div class="item">
+  <div class="item-name">SALADA CAPRESE</div>
+  <div class="item-description">
+    Uma combinação clássica e elegante de tomates frescos, mussarela de búfala, folhas de manjericão<br>
+    e um toque de azeite extra virgem.
+  </div>
+  <div class="item-price">R$ 65,90</div>
+</div>
+<div class="item">
+  <div class="item-name">SALADA DO DIA</div>
+  <div class="item-description">
+    Salada do dia preparada com os ingredientes mais frescos do mercado.
+  </div>
+  <div class="item-price">R$ 19,90</div>
+</div>
+
+<!-- Seção: PORÇÕES FRIAS -->
+<h2 id="porcoes-frias">PORÇÕES FRIAS</h2>
+<img alt="Imagem Porções Frias" class="section-image" src="porcaofria.png" loading="lazy" />
+<div class="item">
+  <div class="item-name">CARPACCIO</div>
+  <div class="item-description">
+    Carne macia em fatias translúcidas, uma experiência delicada e sofisticada. Acompanha torradas e<br>
+    molho especial da casa.
+  </div>
+  <div class="item-price">R$ 59,90</div>
+</div>
+<div class="item">
+  <div class="item-name">CEVICHE DE TILÁPIA</div>
+  <div class="item-description">
+    Tilápia crua em cubos, cebola roxa, pimenta dedo de moça, coentro salsinha, gengibre e limão,<br>
+    acompanha chips de mandioca frita.
+  </div>
+  <div class="item-price">R$ 49,90</div>
+</div>
+<div class="item">
+  <div class="item-name">SASHIMI DE TILÁPIA</div>
+  <div class="item-description">
+    Com fatias frescas de tilápia crua servidas com molho shoyu, cebola e tempero especial.
+  </div>
+  <div class="item-price">MEIA: R$ 29,90 | INTEIRA: R$ 49,90</div>
+</div>
+<div class="item">
+  <div class="item-name">TÁBUA DE FRIOS COMPLETA</div>
+  <div class="item-description">
+    Presunto, muçarela, provolone, queijo prato, gorgonzola, ovo de codorna, azeitona verde, palmito,<br>
+    salame e tomate cereja.
+  </div>
+  <div class="item-price">R$ 99,90</div>
+</div>
+<div class="item">
+  <div class="item-name">MISTO DE FRIOS</div>
+  <div class="item-description">
+    Salame, azeitona verde, palmito e ovo de codorna.
+  </div>
+  <div class="item-price">R$ 68,00</div>
+</div>
+<div class="item">
+  <div class="item-name">AZEITONA VERDE</div>
+  <div class="item-description">
+    O acompanhamento clássico que nunca decepciona.
+  </div>
+  <div class="item-price">R$ 14,90</div>
+</div>
+<div class="item">
+  <div class="item-name">OVO DE CODORNA</div>
+  <div class="item-description">
+    Ovo de Codorna em conserva.
+  </div>
+  <div class="item-price">R$ 23,90</div>
+</div>
+<div class="item">
+  <div class="item-name">CENOURA E PEPINO EM PALITO</div>
+  <div class="item-description">
+    Frescor e crocância em uma combinação leve e saudável.
+  </div>
+  <div class="item-price">R$ 18,70</div>
+</div>
+     
+      <!-- Seção: Di Buteco – Tradição e Crocância -->
+      <h2 id="di-buteco">DI BUTECO – TRADIÇÃO E CROCÂNCIA</h2>
+<img alt="Imagem Di Buteco" class="section-image" src="dibuteco.jpg" loading="lazy" />
+<div class="item">
+  <div class="item-name">BOLINHO DE CUPIM COM QUEIJO</div>
+  <div class="item-description">
+    Carne desfiada de cupim e queijo.
+  </div>
+  <div class="item-price">R$ 49,90</div>
+</div>
+<div class="item">
+  <div class="item-name">BOLINHO DE LINGUIÇA PICANTE COM MANDIOCA</div>
+  <div class="item-description">
+    Linguiça e mandioca na sua melhor combinaçao.
+  </div>
+  <div class="item-price">R$ 44,90</div>
+</div>
+<div class="item">
+  <div class="item-name">BOLINHO DE CARNE PICANTE</div>
+  <div class="item-description">
+    -
+  </div>
+  <div class="item-price">R$ 47,90</div>
+</div>
+<div class="item">
+  <div class="item-name">BOLINHO DE CABOTIÁ</div>
+  <div class="item-description">
+    -
+  </div>
+  <div class="item-price">R$ 44,90</div>
+</div>
+<div class="item">
+  <div class="item-name">BOLINHO DE COSTELA</div>
+  <div class="item-description">
+    -
+  </div>
+  <div class="item-price">R$ 44,90</div>
+</div>
+<div class="item">
+  <div class="item-name">DADINHO DE QUEIJO COALHO</div>
+  <div class="item-description">
+    -
+  </div>
+  <div class="item-price">R$ 58,40</div>
+</div>
+<div class="item">
+  <div class="item-name">DADINHO DE TAPIOCA</div>
+  <div class="item-description">
+    Feito a partir de uma mistura de tapioca granulada e queijo coalho. 
+  </div>
+  <div class="item-price">R$ 58,40</div>
+</div>
+<div class="item">
+  <div class="item-name">GONZAGUINHA</div>
+  <div class="item-description">
+    Mandioca frita com queijo coalho coberto de melaço de cana.
+  </div>
+  <div class="item-price">R$ 52,90</div>
+</div>
+
+
+      <!-- Seção: Pasteis – Recheios que Encantam -->
+<h2 id="pasteis">PASTEIS – RECHEIOS QUE ENCANTAM</h2>
+<img alt="Imagem Pasteis" class="section-image" src="pasteis.jpg" loading="lazy" />
+<div class="item">
+  <div class="item-name">PASTEL DE COSTELA</div>
+  <div class="item-description">
+    Recheio generoso de costela desfiada suculenta em massa fina e crocante e cream cheese.
+  </div>
+  <div class="item-price">R$ 58,90</div>
+</div>
+<div class="item">
+  <div class="item-name">PASTEL DE CARNE COM QUEIJO</div>
+  <div class="item-description">
+    Combinação clássica e sempre vencedora, um clássico de buteco na sua mesa.
+  </div>
+  <div class="item-price">R$ 54,90</div>
+</div>
+<div class="item">
+  <div class="item-name">PASTEL DE CARNE SECA</div>
+  <div class="item-description">
+    O sabor do Nordeste em cada pedaço, carne seca feita na casa com muito carinho para atender o seu paladar.
+  </div>
+  <div class="item-price">R$ 58,40</div>
+</div>
+<div class="item">
+  <div class="item-name">PASTEL ROMEU E JULIETA</div>
+  <div class="item-description">
+    Doce e salgado em uma dança de sabores, um clássico não só nos cinemas.
+  </div>
+  <div class="item-price">R$ 58,40</div>
+</div>
+<div class="item">
+  <div class="item-name">PASTEL DE DOCE DE LEITE</div>
+  <div class="item-description">
+    Sobremesa crocante e irresistível. Na medida para adoçar e lembrar a infância.
+  </div>
+  <div class="item-price">R$ 58,40</div>
+</div>
+<div class="item">
+  <div class="item-name">PASTELZINHO MISTO</div>
+  <div class="item-description">
+    Para quem gosta de variedade em cada mordida. Pastel de carne e de queijo, uma opção para quem gosta de dividir sabores.
+  </div>
+  <div class="item-price">R$ 43,70</div>
+</div>
+
+      <!-- Seção: PORÇÕES QUENTES – CONFORTO E SABOR -->
+<h2 id="porcoes-quentes">PORÇÕES QUENTES – CONFORTO E SABOR</h2>
+<img alt="Imagem Porções Quentes" class="section-image" src="porcaoquentes.jpg" loading="lazy" />
+
+<div class="item">
+  <div class="item-name">FRANGO A PASSARINHO COM FRITAS</div>
+  <div class="item-description">
+    Acompanha molho tártaro.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 39,90 | INTEIRA: R$ 54,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">FRANGO A PASSARINHO COMPLETO</div>
+  <div class="item-description">
+    Com acompanhamentos especiais: fritas, bacon, alho frito e molho tártaro.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 49,90 | INTEIRA: R$ 69,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">LOMBINHO NO SAL PRETO</div>
+  <div class="item-description">
+    Carne crocante com um toque de sal negro. Acompanha molho tártaro,shoyu e torrada.
+  </div>
+  <div class="item-price">
+    R$ 59,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">TILÁPIA À DORE COM FRITAS</div>
+  <div class="item-description">
+    Peixe leve e crocante. Acompanha molho de alho.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 67,90 | INTEIRA: R$ 95,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">MOELA Á MODA</div>
+  <div class="item-description">
+    Tempero caseiro e sabor intenso, uma dose de vinho branco e manteiga.
+  </div>
+  <div class="item-price">
+    R$ 39,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">ISCA DE FRANGO</div>
+  <div class="item-description">
+    Crocante por fora, macio por dentro, perfeito para compartilhar. Acompanha molho tártaro e torrada.
+  </div>
+  <div class="item-price">
+    R$ 59,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">CLUBE DO BOLINHA</div>
+  <div class="item-description">
+    Calabresa embriagada na cachaça com tomate seco e azeitona preta e manjericão acompanha pão fatiado.
+  </div>
+  <div class="item-price">
+    R$ 52,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">CALABRESA ACEBOLADA</div>
+  <div class="item-description">
+    Fatiada e refogada com cebola, acompanha molho de churrasco e pão fatiado.
+  </div>
+  <div class="item-price">
+    R$ 39,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">CARNE SECA ACEBOLADA</div>
+  <div class="item-description">
+    Carne em cubo e refogada. Acompanha molho de churrasco e pão fatiado.
+  </div>
+  <div class="item-price">
+    R$ 74,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">FILÉ MIGNON GRATINADO COM REQUEIJÃO CREMOSO</div>
+  <div class="item-description">
+    Acompanha torrada.
+  </div>
+  <div class="item-price">
+    R$ 116,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">LINGUIÇA PICANTE FRITA</div>
+  <div class="item-description">
+    Acompanha mandioca frita, molho de churrasco e pão fatiado.
+  </div>
+  <div class="item-price">
+    R$ 34,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">MANDIOQUINHA ESPECIAL</div>
+  <div class="item-description">
+    Mandioca cremosa frita e gratinada com queijo parmesão e bacon.
+  </div>
+  <div class="item-price">
+    R$ 42,00
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">MANDIOCA CREMOSA</div>
+  <div class="item-description">
+    Crocante por fora e macia por dentro.
+  </div>
+  <div class="item-price">
+    R$ 32,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">POLENTA FRITA</div>
+  <div class="item-description">
+    Crocante e dourada.
+  </div>
+  <div class="item-price">
+    R$ 24,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">PORÇÃO DE FRITAS</div>
+  <div class="item-description">
+    -
+  </div>
+  <div class="item-price">
+    R$ 31,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">BATATA FRITA COM CHEDDAR E BACON</div>
+  <div class="item-description">
+    -
+  </div>
+  <div class="item-price">
+    R$ 41,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">PROVOLETA</div>
+  <div class="item-description">
+    Queijo derretido e gratinado, feito na chapa.
+  </div>
+  <div class="item-price">
+    R$ 58,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">TORRESMO DE ROLO</div>
+  <div class="item-description">
+    Crocância que derrete na boca, cozedura por 12 horas em forno baixo, extraído todo sabor e suculência.
+  </div>
+  <div class="item-price">
+    R$ 58,40
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">TORRESMO DE ROLO COM QUEIJO E CHIMICHURRI</div>
+  <div class="item-description">
+    O contraste perfeito entre crocante e cremoso. Chimichurri artesanal uruguaio, com queijo finalizando tudo por cima.
+  </div>
+  <div class="item-price">
+    R$ 66,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">TORRESMO DE ROLO COM QUEIJO E ALHO</div>
+  <div class="item-description">
+    Para os amantes de sabores intensos. Alho frito na hora, queijo da melhor qualidade e torresmo de rolo com 12 horas de cocção.
+  </div>
+  <div class="item-price">
+    R$ 66,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">TORRESMO DE ROLO ROMEU E JULIETA</div>
+  <div class="item-description">
+    Combinação surpreendente de requeijão cremoso e goiabada.
+  </div>
+  <div class="item-price">
+    R$ 68,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">TRIO PORK'S</div>
+  <div class="item-description">
+    Seleção de petiscos de porco perfeita para o happy hour.
+  </div>
+  <div class="item-price">
+    R$ 89,90
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-name">TORRESMO CAIPIRA</div>
+  <div class="item-description">
+    Textura perfeita e sabor marcante.
+  </div>
+  <div class="item-price">
+    R$ 44,30
+  </div>
+</div>
+
+      <!-- Seção: AKI NA BRASA – CORTES NOBRES E SUCULENTOS -->
+<h2 id="aki-na-brasa">AKI NA BRASA – CORTES NOBRES E SUCULENTOS</h2>
+<img alt="Imagem Aki na Brasa" class="section-image" src="akinabrasa.jpg" loading="lazy" />
+<div class="item">
+  <div class="item-name">FILÉ APERITIVO ACEBOLADO</div>
+  <div class="item-description">
+    Acompanha pão e molho.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 81,90 | INTEIRA: R$ 116,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">PICANHA GRELHADA</div>
+  <div class="item-description">
+    Acompanha arroz, mandioca, salada, vinagrete, farofa e molho de churrasco.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 131,00 | INTEIRA: R$ 187,40
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">TÁBUA DE CARNE EXCLUSIVE</div>
+  <div class="item-description">
+    Cupim, picanha, beef ancho e mignon."Acompanha arroz, mandioca, salada, vinagrete, farofa e molho de churrasco".
+  </div>
+  <div class="item-price">
+    MEIA: R$ 142,90 | INTEIRA: R$ 203,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">TÁBUA DE CARNES MISTA</div>
+  <div class="item-description">
+    Cupim casqueirado, coxa sobrecoxa desossada, linguiça cuiabana e copa lombo."Acompanha arroz, mandioca, salada, vinagrete, farofa e molho de churrasco".
+  </div>
+  <div class="item-price">
+    MEIA: R$ 109,90 | INTEIRA: R$ 155,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">CUPIM CASQUEIRADO DO CHEF</div>
+  <div class="item-description">
+    Cupim casqueirado com catupiry e alho frito."Acompanha arroz, mandioca, salada, vinagrete, farofa e molho de churrasco".
+  </div>
+  <div class="item-price">
+    MEIA: R$ 105,90 | INTEIRA: R$ 148,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">CUPIM CASQUEIRADO</div>
+  <div class="item-description">
+    Cupim casqueirado. "Acompanha arroz, mandioca, salada, vinagrete, farofa e molho de churrasco"..
+  </div>
+  <div class="item-price">
+    MEIA: R$ 89,90 | INTEIRA: R$ 128,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">BEEF ANCHO GRELHADO</div>
+  <div class="item-description">
+    "Acompanha arroz, mandioca, salada, vinagrete, farofa e molho de churrasco".
+  </div>
+  <div class="item-price">
+    MEIA: R$ 106,90 | INTEIRA: R$ 151,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">FRANGO NA BRASA</div>
+  <div class="item-description">
+    "Acompanha arroz, mandioca, salada, vinagrete, farofa e molho de churrasco".
+  </div>
+  <div class="item-price">
+    MEIA: R$ 59,90 | INTEIRA: R$ 84,40
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">PINTADO GRELHADO</div>
+  <div class="item-description">
+    Acompanha farofa de banana da terra, arroz ao alho e  molho vinagrete.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 109,90 | INTEIRA: R$ 149,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">PANCETA NA BRASA</div>
+  <div class="item-description">
+    Acompanha barbecue de goiabada. "Não acompanha guarnições"
+  </div>
+  <div class="item-price">
+    R$ 44,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">LINGUIÇA CUIABANA</div>
+  <div class="item-description">
+    "Acompanha arroz, mandioca, salada, vinagrete, farofa e molho de churrasco".
+  </div>
+  <div class="item-price">
+    R$ 59,90
+  </div>
+</div>
+
+      <!-- Seção: À LA CARTE – PRATOS ESPECIAIS -->
+<h2 id="a-la-carte">À LA CARTE – PRATOS ESPECIAIS</h2>
+<img alt="Imagem À La Carte" class="section-image" src="alacarte.jpg" loading="lazy" />
+<div class="item">
+  <div class="item-name">FILÉ MIGNON À CUBANA</div>
+  <div class="item-description">
+    Filé à milanesa coberto com presunto e muçarela, acompanha fritas, banana à milanesa, panachê, frutas, milho, ervilha e arroz branco. Um toque tropical.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 133,90 | INTEIRA: R$ 189,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">FILÉ MIGNON À PARMEGIANA</div>
+  <div class="item-description">
+    Filé mignon à milanesa coberto com muçarela, molho de tomate da casa, palmito, ervilha e parmesão ralado, acompanha arroz branco e fritas. Clássico com molho de tomate e queijo derretido.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 110,90 | INTEIRA: R$ 159,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">FILÉ DO CHEF</div>
+  <div class="item-description">
+    Assinatura da casa: filé mignon com molho de mostarda, bacon e ervilha, acompanha batata à dorê e arroz à grega.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 109,90 | INTEIRA: R$ 155,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">FILÉ OSWALDO ARANHA</div>
+  <div class="item-description">
+    Filé mignon com alho frito, brócolis, farofa de ovo, acompanha batata dorê e arroz branco. Tradição e sabor em um só lugar.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 115,50 | INTEIRA: R$ 165,00
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">FILÉ ACEBOLADO</div>
+  <div class="item-description">
+    Filé mignon com cebolas caramelizadas, acompanhado de arroz ao alho.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 97,90 | INTEIRA: R$ 139,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">FILÉ COM FRITAS</div>
+  <div class="item-description">
+    Filé mignon servido com batata e arroz branco. Simples, porém perfeito.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 90,90 | INTEIRA: R$ 139,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">FILÉ DE FRANGO À PARMEGIANA</div>
+  <div class="item-description">
+    Frango à milanesa coberto com muçarela, molho de tomate da casa, palmito, ervilha e parmesão ralado, acompanha arroz branco e fritas.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 75,90 | INTEIRA: R$ 107,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">FILÉ DE FRANGO AO CREME DE MILHO</div>
+  <div class="item-description">
+    Frango à milanesa coberto com muçarela e creme de milho, acompanhado de arroz branco e fritas. Cremoso e reconfortante.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 73,90 | INTEIRA: R$ 104,90
+  </div>
+</div>
+<div class="item">
+  <div class="item-name">FILÉ DE FRANGO DO CHEF</div>
+  <div class="item-description">
+    Filé de frango chapeado com molho de mostarda, bacon e ervilha, acompanhado de batata à dorê e arroz à grega.
+  </div>
+  <div class="item-price">
+    MEIA: R$ 78,90 | INTEIRA: R$ 111,90
+  </div>
+</div>
+
+      <!-- Seção: Pratos Kids -->
+<h2 id="prato-kids">PRATOS KIDS</h2>
+<img alt="Imagem Pratos Kids" class="section-image" src="pratokids.png" loading="lazy" />
+<div class="item">
+  <div class="item-name">MINI CHEF FILÉ MIGNON</div>
+  <div class="item-description">
+    Filé mignon com arroz branco,cenoura,brócolis e batata frita.
+  </div>
+  <div class="item-price">R$ 26,90</div>
+</div>
+<div class="item">
+  <div class="item-name">MINI CHEF CHICKEN</div>
+  <div class="item-description">
+    Tirinhas de peito de frango com arroz branco e batata frita.
+  </div>
+  <div class="item-price">R$ 23,90</div>
+</div>
+
+     <!-- Seção: Acompanhamentos - O Toque Final -->
+<h2 id="acompanhamentos">ACOMPANHAMENTOS - O TOQUE FINAL</h2>
+<img alt="Imagem Acompanhamentos" class="section-image" src="acompanhamentos.png" loading="lazy" />
+<div class="item">
+  <div class="item-name">ARROZ À GREGA</div>
+  <div class="item-description">
+    Uva passa, cenoura,presunto e ervilha.
+  </div>
+  <div class="item-price">R$ 12,90</div>
+</div>
+<div class="item">
+  <div class="item-name">ARROZ AO ALHO</div>
+  <div class="item-description">
+    Arroz com alho.
+  </div>
+  <div class="item-price">R$ 11,90</div>
+</div>
+<div class="item">
+  <div class="item-name">ARROZ BRANCO</div>
+  <div class="item-description">
+    O clássico.
+  </div>
+  <div class="item-price">R$ 9,00</div>
+</div>
+
+      <!-- Seção: Hambúrgueres - Sabores Autênticos -->
+<h2 id="hamburgueres-autenticos">HAMBÚRGUERES - SABORES AUTÊNTICOS</h2>
+<img alt="Imagem Hambúrgueres" class="section-image" src="hamburgueres.jpg" loading="lazy" />
+<div class="item">
+  <div class="item-name">AKI BURGER</div>
+  <div class="item-description">
+    Brioche, hambúrguer artesanal, queijo prato, e acompanha molho de alho. O tradicional feito com carinho.
+  </div>
+  <div class="item-price">R$ 26,90</div>
+</div>
+<div class="item">
+  <div class="item-name">AKI BURGER SALADA</div>
+  <div class="item-description">
+    Brioche, hambúrguer artesanal, alface, tomate, cebola roxa, queijo prato, e acompanha molho de alho. Frescor e sabor em equilíbrio.
+  </div>
+  <div class="item-price">R$ 28,90</div>
+</div>
+<div class="item">
+  <div class="item-name">AKI BURGER BACON</div>
+  <div class="item-description">
+    Brioche, hambúrguer artesanal, alface, tomate, cebola roxa, queijo prato, e acompanha molho de alho. Crocância e sabor defumado.
+  </div>
+  <div class="item-price">R$ 32,90</div>
+</div>
+<div class="item">
+  <div class="item-name">AKI CUPIM</div>
+  <div class="item-description">
+    Baguete, cupim, queijo prato, rúcula, tomate seco, cebola roxa, e acompanha molho de alho. O sabor do sertão em um pão artesanal.
+  </div>
+  <div class="item-price">R$ 39,90</div>
+</div>
+<div class="item">
+  <div class="item-name">FRANGO CHAPEADO</div>
+  <div class="item-description">
+    Brioche, filé de frango chapeado, cream cheese, rúcula, tomate seco, e acompanha molho de alho. Leve e saboroso.
+  </div>
+  <div class="item-price">R$ 25,90</div>
+</div>
+<div class="item">
+  <div class="item-name">FRANGO CROCANTE</div>
+  <div class="item-description">
+    Brioche, filé de frango empanado, queijo prato, bacon, molho de alho com alcaparras, rúcula e tomate. Textura perfeita em cada mordida.
+  </div>
+  <div class="item-price">R$ 29,90</div>
+</div>
+<div class="item">
+  <div class="item-name">PERNIL CREMOSO</div>
+  <div class="item-description">
+    Baguete, pernil suculento cozido lentamente, queijo, rúcula e tomate. Maciez e sabor que conquistam.
+  </div>
+  <div class="item-price">R$ 25,90</div>
+</div>
+<div class="item">
+  <div class="item-name">MINI BURGER (4 UNIDADES)</div>
+  <div class="item-description">
+    -
+  </div>
+  <div class="item-price">R$ 32,90</div>
+</div>
+
+      <!-- Seção: Sobremesas - Final Perfeito -->
+      <h2 id="sobremesas-final">SOREMESAS - FINAL PERFEITO</h2>
+      <img alt="Imagem Sobremesas Final" class="section-image" src="sobremesas.png" loading="lazy" />
+      <div class="item">
+        <div class="item-name">PETIT GÂTEAU</div>
+        <div class="item-description">
+          Bolinho de chocolate com recheio cremoso, amendoim, sorvete de creme e ganache de chocolate amargo. Chocolate derretido que conquista.
+        </div>
+        <div class="item-price">
+          R$ 16,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">SORVETE NA TAÇA</div>
+        <div class="item-description">
+          Refrescante e cremoso.
+        </div>
+        <div class="item-price">
+          R$ 18,00
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">CREPE DE DOCE DE LEITE</div>
+        <div class="item-description">
+          Doce e reconfortante.
+        </div>
+        <div class="item-price">
+          R$ 25,00
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">BRIGADEIRO DE COLHER COM MORANGO</div>
+        <div class="item-description">
+          Com morango fresco.
+        </div>
+        <div class="item-price">
+          R$ 11,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">PUDIM NO COPO</div>
+        <div class="item-description">
+          Ninho ou Doce de leite.
+        </div>
+        <div class="item-price">
+          R$ 15,00
+        </div>
+      </div>
+
+      <!-- Seção: Chopp -->
+      <h2 id="chopp">CHOPP</h2>
+      <img alt="Imagem Chopp" class="section-image" src="chopp.png" loading="lazy" />
+      <div class="item">
+        <div class="item-name">CHOPP HEINEKEN 330ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 12,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">CHOPP HARDEN 330ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 10,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">CHOPP DE VINHO 330ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 14,90
+        </div>
+      </div>
+
+      <!-- Seção: Cerveja 600ML -->
+      <h2 id="cerveja600ml">CERVEJA 600ML</h2>
+      <img alt="Imagem Cerveja 600ML" class="section-image" src="cervejas600ml.png" loading="lazy" />
+      <div class="item">
+        <div class="item-name">HEINEKEN 600ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 18,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">ORIGINAL 600ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 15,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">SPATEN 600ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 14,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">AMSTEL 600ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 13,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">ANTÁRCTICA 600ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 12,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">BRAHMA 600ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 12,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">SKOL 600ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 12,90
+        </div>
+        </div>
+      <div class="item">
+        <div class="item-name">EISENBAHN 600ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 10,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">PETRA 600ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 10,96
+        </div>
+      </div>
+
+      <!-- Seção: Long Necks -->
+      <h2 id="long-necks">LONG NECKS</h2>
+      <img alt="Imagem Long Necks" class="section-image" src="longnecks.png" loading="lazy" />
+      <div class="item">
+        <div class="item-name">HEINEKEN 330ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 12,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">CORONA 330ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 12,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">BUDWAIZER 330ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 12,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">AMSTEL ULTRA 275ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 8,90
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-name">HEINEKEN ZERO 330ML</div>
+        <div class="item-description">
+          -
+        </div>
+        <div class="item-price">
+          R$ 12,90
+        </div>
+      </div>
+
+      <!-- Seção: NÃO ALCOÓLICOS -->
+<h2 id="nao-alcoolicos">NÃO ALCOÓLICOS</h2>
+<img alt="Imagem Não Alcoólicos" class="section-image" src="naoalcolicos.png" loading="lazy" />
+
+<div class="item">
+  <div class="item-name">ÁGUA SEM GÁS 500ML</div>
+  <div class="item-price">R$ 4,00</div>
+</div>
+
+<div class="item">
+  <div class="item-name">ÁGUA COM GÁS 500ML</div>
+  <div class="item-price">R$ 4,50</div>
+</div>
+
+<div class="item">
+  <div class="item-name">ENERGÉTICO RED BULL LATA 269ML</div>
+  <div class="item-price">R$ 14,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">ENERGÉTICO MONSTER LATA 473ML</div>
+  <div class="item-price">R$ 14,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">ISOTÓNICO 500ML</div>
+  <div class="item-description">Sabores.</div>
+  <div class="item-price">R$ 9,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">COCA COLA KS 290ML</div>
+  <div class="item-description">Normal, zero.</div>
+  <div class="item-price">R$ 6,00</div>
+</div>
+
+<div class="item">
+  <div class="item-name">COCA COLA LATA 350ML</div>
+  <div class="item-description">Normal, zero.</div>
+  <div class="item-price">R$ 8,00</div>
+</div>
+
+<div class="item">
+  <div class="item-name">H20H 500ML</div>
+  <div class="item-description">Sabores.</div>
+  <div class="item-price">R$ 7,00</div>
+</div>
+
+<div class="item">
+  <div class="item-name">PEPSI LATA 350ML</div>
+  <div class="item-description">Normal, zero.</div>
+  <div class="item-price">R$ 8,00</div>
+</div>
+
+<div class="item">
+  <div class="item-name">FANTA LARANJA LATA 350ML</div>
+  <div class="item-description">Normal, zero.</div>
+  <div class="item-price">R$ 8,00</div>
+</div>
+
+<div class="item">
+  <div class="item-name">FANTA UVA LATA 350ML</div>
+  <div class="item-description">Normal, zero.</div>
+  <div class="item-price">R$ 8,00</div>
+</div>
+
+<div class="item">
+  <div class="item-name">SPRITE LIMÃO LATA 350ML</div>
+  <div class="item-description">Normal, zero.</div>
+  <div class="item-price">R$ 8,00</div>
+</div>
+
+<div class="item">
+  <div class="item-name">SCHWEPPES CITRUS LATA 350ML</div>
+  <div class="item-description">Normal, zero.</div>
+  <div class="item-price">R$ 8,00</div>
+</div>
+
+<div class="item">
+  <div class="item-name">SCHWEPPES TÔNICA LATA 350ML</div>
+  <div class="item-description">Normal, zero.</div>
+  <div class="item-price">R$ 8,00</div>
+</div>
+
+<div class="item">
+  <div class="item-name">GUARANÁ ANTÁRCTICA LATA 350ML</div>
+  <div class="item-description">Normal, zero.</div>
+  <div class="item-price">R$ 8,00</div>
+</div>
+
+<div class="item">
+  <div class="item-name">SUCO UVA GASEIFICADO LATA 269ML</div>
+  <div class="item-description">Normal, zero.</div>
+  <div class="item-price">R$ 10,90</div>
+</div>
+
+      <!-- Seção: SUCOS COPO 500ML -->
+<h2 id="sucos-500ml">SUCOS COPO 500ML</h2>
+<img alt="Imagem Sucos Copo 500ml" class="section-image" src="sucocopo.png" loading="lazy" />
+
+<div class="item">
+  <div class="item-name">SUCO NATURAL LARANJA</div>
+  <div class="item-price">R$ 12,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">SUCO POLPA</div>
+  <div class="item-description">
+    Morango, abacaxi, acerola, caju, frutas vermelhas, limão, maracujá, uva.
+  </div>
+  <div class="item-price">R$ 12,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">SUCO MISTO</div>
+  <div class="item-description">
+    Abacaxi com hortelã, laranja com acerola, laranja com morango.
+  </div>
+  <div class="item-price">R$ 13,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">FRAPE</div>
+  <div class="item-description">
+    Coco, morango, abacaxi, acerola, maracujá e uva.
+  </div>
+  <div class="item-price">R$ 19,90</div>
+</div>
+
+      <!-- Seção: DRINKS SEM ÁLCOOL -->
+<h2 id="drinks-semalcool">DRINKS SEM ÁLCOOL</h2>
+<img alt="Imagem Drinks Sem Álcool" class="section-image" src="drinksemalcool.png" loading="lazy" />
+
+<div class="item">
+  <div class="item-name">LA BELLE DE JOUR</div>
+  <div class="item-description">
+    Morango, h20h limão, xarope de curaçau blue e laranja bahia.
+  </div>
+  <div class="item-price">R$ 14,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">MULA SEM MOSCOW</div>
+  <div class="item-description">
+    Limão taiti, xarope de gengibre, água com gás e espuma de gengibre.
+  </div>
+  <div class="item-price">R$ 14,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">PINK LEMONADE</div>
+  <div class="item-description">
+    Limão taiti, suco de cranberry, água com gás e hortelã.
+  </div>
+  <div class="item-price">R$ 14,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">SODA ITALIANA</div>
+  <div class="item-description">
+    Morango, maçã verde, limão siciliano, maracujá,cranberry.
+  </div>
+  <div class="item-price">R$ 14,90</div>
+</div>
+
+      <!-- Seção: DRINKS CLÁSSICOS -->
+<h2 id="drinks-classicos">DRINKS CLÁSSICOS</h2>
+<img alt="Imagem Drinks Clássicos" class="section-image" src="drinkclassico.png" loading="lazy" />
+
+<div class="item">
+  <div class="item-name">APEROL SPRITZ</div>
+  <div class="item-description">
+    Aperol, espumante seco, água com gás .
+  </div>
+  <div class="item-price">R$ 27,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">COSMOPOLITAN</div>
+  <div class="item-description">
+    Vodka, licor de laranja, suco de cranberry e limão taiti.
+  </div>
+  <div class="item-price">R$ 27,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">MARGARITA</div>
+  <div class="item-description">
+    Tequila, limão taiti e licor de laranja.
+  </div>
+  <div class="item-price">R$ 32,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">FITZGERALD</div>
+  <div class="item-description">
+    Gin, limão siciliano, angostura bitter e xarope de açúcar.
+  </div>
+  <div class="item-price">R$ 27,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">MARACUJACK</div>
+  <div class="item-description">
+    Jack daniel's, maracujá, h20h limão e espuma de maracujá.
+  </div>
+  <div class="item-price">R$ 29,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">MOJITO</div>
+  <div class="item-description">
+    Rum, xarope de açúcar, hortelã e água com gás.
+  </div>
+  <div class="item-price">R$ 22,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">MOSCOW MULE</div>
+  <div class="item-description">
+    Vodka, limão taiti, xarope de gengibre e espuma de gengibre.
+  </div>
+  <div class="item-price">R$ 27,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">NEGRONI</div>
+  <div class="item-description">
+    Gin, Campari, vermute rosso, angostura bitter.
+  </div>
+  <div class="item-price">R$ 27,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">PINA COLADA</div>
+  <div class="item-description">
+    Rum de coco, leite condensado e abacaxi.
+  </div>
+  <div class="item-price">R$ 27,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">SEX ON THE BEACH</div>
+  <div class="item-description">
+    Vodka, licor de pessego, suco de laranja, xarope de grenadine.
+  </div>
+  <div class="item-price">R$ 27,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">GREN NICE</div>
+  <div class="item-description">
+    Vodka, licor de laranja, licor de menta, suco de limão e xarope de maçã verde.
+  </div>
+  <div class="item-price">R$ 27,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">DRY MARTINI</div>
+  <div class="item-description">
+    Vermute seco e gin.
+  </div>
+  <div class="item-price">R$ 27,90</div>
+</div>
+
+<div class="item">
+  <div class="item-name">BATIDINHA DE VINHO COM MORANGO</div>
+  <div class="item-description">
+    -
+  </div>
+  <div class="item-price">R$ 26,90</div>
+</div>
+
+      <!-- Seção: CAIPIRINHAS MALIBU -->
+<h2 id="caipirinhas">CAIPIRINHAS MALIBU</h2>
+<img alt="Imagem Caipirinhas Malibu" class="section-image" src="caipirinhas.png" loading="lazy" />
+
+<div class="item">
+  <div class="item-name">CAIPIRINHA VELHO BARREIRO/CACHAÇA 51</div>
+  <div class="item-description">
+    Morango, morango e limão siciliano, frutas vermelhas, maracujá, limão, limão com rapadura.
+  </div>
+  <div class="item-price">R$ 20,90</div>
+</div>
+<div class="item">
+  <div class="item-name">CAIPIROSKA SMIRNOFF</div>
+  <div class="item-description">
+    Morango, morango e limão siciliano, frutas vermelhas, maracujá, limão, limão com rapadura.
+  </div>
+  <div class="item-price">R$ 24,90</div>
+</div>
+<div class="item">
+  <div class="item-name">CAIPIROSKA ABSOLUT</div>
+  <div class="item-description">
+    Morango, morango e limão siciliano, frutas vermelhas, maracujá, limão, limão com rapadura.
+  </div>
+  <div class="item-price">R$ 29,90</div>
+</div>
+<div class="item">
+  <div class="item-name">SAQUERINHA</div>
+  <div class="item-description">
+    Morango, morango e limão siciliano, frutas vermelhas, maracujá, limão, limão com rapadura.
+  </div>
+  <div class="item-price">R$ 22,90</div>
+</div>
+
+      <!-- Seção: DRINKS TEMÁTICOS -->
+<h2 id="drinks-tematicos">DRINKS TEMÁTICOS</h2>
+<img alt="Imagem Drinks Temáticos" class="section-image" src="drinktematicos.png" loading="lazy" />
+
+<div class="item">
+  <div class="item-name">LEITE DE ONÇA</div>
+  <div class="item-description">
+    Uma combinação ousada de vodka, paçoca e leite condensado.
+  </div>
+  <div class="item-price">R$ 22,90</div>
+</div>
+<div class="item">
+  <div class="item-name">MARRUÁ</div>
+  <div class="item-description">
+    Um drink rústico que mistura cachaça e whisky com o frescor do limão taiti e um toque doce de xarope de gengibre.
+  </div>
+  <div class="item-price">R$ 22,90</div>
+</div>
+<div class="item">
+  <div class="item-name">BRAZIL MULE</div>
+  <div class="item-description">
+    Uma versão tropical do mule com cachaça, xarope de gengibre, limão taiti e uma deliciosa espuma de gengibre.
+  </div>
+  <div class="item-price">R$ 22,90</div>
+</div>
+<div class="item">
+  <div class="item-name">BLUE OCEAN</div>
+  <div class="item-description">
+    Refrescante, combina vodka, xarope de curaçau blue e o toque cítrico do limão taiti e espumante.
+  </div>
+  <div class="item-price">R$ 22,90</div>
+</div>
+<div class="item">
+  <div class="item-name">LOVELY NIGHT</div>
+  <div class="item-description">
+    Uma combinação vibrante de gin, xarope de hibisco, limão siciliano e vermouth Rossato.
+  </div>
+  <div class="item-price">R$ 27,90</div>
+</div>
+<div class="item">
+  <div class="item-name">GINGER 43</div>
+  <div class="item-description">
+    Licor 43, limão siciliano e xarope de gengibre.
+  </div>
+  <div class="item-price">R$ 36,90</div>
+</div>
+
+      <!-- Seção: SHOTS -->
+<h2 id="shots">SHOTS</h2>
+<img alt="Imagem Shots" class="section-image" src="arcoiris1.png" loading="lazy" />
+
+
+<div class="item">
+  <div class="item-name">ARCO IRIS</div>
+  <div class="item-description">
+    Vodka, licor curaçau blue, suco de laranja e granadini.
+  </div>
+  <div class="item-price">R$ 14,90</div>
+</div>
+<div class="item">
+  <div class="item-name">CHOPINHO</div>
+  <div class="item-description">
+    Licor 43 e chantilly.
+  </div>
+  <div class="item-price">R$ 34,90</div>
+</div>
+<div class="item">
+  <div class="item-name">BOB MARLEY</div>
+  <div class="item-description">
+    Licor de menta, grenadine e suco de laranja.
+  </div>
+  <div class="item-price">R$ 14,90</div>
+</div>
+
+
+      <!-- Seção: GIN & TÔNICA -->
+<h2 id="gin-tonica">GIN &amp; TÔNICA</h2>
+<img alt="Imagem Gin &amp; Tônica" class="section-image" src="gt.png" loading="lazy" />
+<div class="item">
+  <div class="item-name">G&amp;T BLUE</div>
+  <div class="item-description">
+    Gin, red bull coco e açaí, espuma de gengibre, zimbro e hortelã.
+  </div>
+  <div class="item-price">R$ 32,90</div>
+</div>
+<div class="item">
+  <div class="item-name">G&amp;T CLÁSSICO</div>
+  <div class="item-description">
+    Gin, tônica, limão siciliano, xarope de açúcar, zimbro e alecrim.
+  </div>
+  <div class="item-price">R$ 26,90</div>
+</div>
+<div class="item">
+  <div class="item-name">G&amp;T DORED</div>
+  <div class="item-description">
+    Gin, red bull coco açaí, chá de frutas vermelhas e pimenta rosa.
+  </div>
+  <div class="item-price">R$ 32,90</div>
+</div>
+<div class="item">
+  <div class="item-name">G&amp;T TROPICAL</div>
+  <div class="item-description">
+    Gin, red bull tropical, maracujá e hortelã e xarope de açucar.
+  </div>
+  <div class="item-price">R$ 32,90</div>
+</div>
+
+      <!-- Seção: VINHOS -->
+<h2 id="vinhos">VINHOS</h2>
+<img alt="Imagem Vinhos" class="section-image" src="vinhos.png" loading="lazy" />
+
+<div class="item">
+  <div class="item-name">GATO NEGRO</div>
+  <div class="item-price">Taça: R$ 30,00 | Garrafa: R$ 90,00</div>
+</div>
+<div class="item">
+  <div class="item-name">CASILLERO DEL DIABLO</div>
+  <div class="item-price">Taça: R$ 30,00 | Garrafa: R$ 90,00</div>
+</div>
+<div class="item">
+  <div class="item-name">CONCHA Y TORO</div>
+  <div class="item-price">Taça: R$ 30,00 | Garrafa: R$ 90,00</div>
+</div>
+
+      <!-- Seção: DESTILADOS -->
+<h2 id="destilados">DESTILADOS</h2>
+<img alt="Imagem Destilados" class="section-image" src="destilados.png" loading="lazy" />
+
+<div class="item">
+  <div class="item-name">APEROL</div>
+  <div class="item-price">Dose: R$ 14,90 | Garrafa: R$ 114,90</div>
+</div>
+<div class="item">
+  <div class="item-name">CACHAÇA SELETA OURO</div>
+  <div class="item-price">Dose: R$ 12,90 | Garrafa: R$ 89,90</div>
+</div>
+<div class="item">
+  <div class="item-name">CAMPARI</div>
+  <div class="item-price">Dose: R$ 14,90 | Garrafa: R$ 114,90</div>
+</div>
+<div class="item">
+  <div class="item-name">GIN TANQUERAY</div>
+  <div class="item-price">Dose: R$ 26,90 | Garrafa: R$ 259,90</div>
+</div>
+<div class="item">
+  <div class="item-name">LICOR 43</div>
+  <div class="item-price">Dose: R$ 33,90 | Garrafa: R$ 294,90</div>
+</div>
+<div class="item">
+  <div class="item-name">LICOR CURAÇAU BLUE</div>
+  <div class="item-price">Dose: R$ 12,90</div>
+</div>
+<div class="item">
+  <div class="item-name">LICOR DE LARANJA</div>
+  <div class="item-price">Dose: R$ 12,90</div>
+</div>
+<div class="item">
+  <div class="item-name">LICOR DE MENTA</div>
+  <div class="item-price">Dose: R$ 12,90</div>
+</div>
+<div class="item">
+  <div class="item-name">LICOR TRIPLE SEC</div>
+  <div class="item-price">Dose: R$ 12,90</div>
+</div>
+<div class="item">
+  <div class="item-name">RUM BACARDI CARTA BLANCA</div>
+  <div class="item-price">Dose: R$ 11,90 | Garrafa: R$ 89,90</div>
+</div>
+<div class="item">
+  <div class="item-name">RUM BACARDI GOLD</div>
+  <div class="item-price">Dose: R$ 12,90 | Garrafa: R$ 99,90</div>
+</div>
+<div class="item">
+  <div class="item-name">SAQUÊ JUN DAITI</div>
+  <div class="item-price">Dose: R$ 12,90</div>
+</div>
+<div class="item">
+  <div class="item-name">TEQUILA JOSÉ CUERVO</div>
+  <div class="item-price">Dose: R$ 24,90 | Garrafa: R$ 264,90</div>
+</div>
+<div class="item">
+  <div class="item-name">VERMUTE ROSATO</div>
+  <div class="item-price">Dose: R$ 12,90</div>
+</div>
+<div class="item">
+  <div class="item-name">VERMUTE ROSSO</div>
+  <div class="item-price">Dose: R$ 12,90</div>
+</div>
+<div class="item">
+  <div class="item-name">VODKA ABSOLUT</div>
+  <div class="item-price">Dose: R$ 19,90 | Garrafa: R$ 179,90</div>
+</div>
+<div class="item">
+  <div class="item-name">VODKA SMIRNOFF</div>
+  <div class="item-price">Dose: R$ 11,90 | Garrafa: R$ 99,90</div>
+</div>
+<div class="item">
+  <div class="item-name">WHISKY BALLANTINES 8 ANOS</div>
+  <div class="item-price">Dose: R$ 14,90 | Garrafa: R$ 189,90</div>
+</div>
+<div class="item">
+  <div class="item-name">WHISKY JACK APPLE</div>
+  <div class="item-price">Dose: R$ 28,90 | Garrafa: R$ 374,90</div>
+</div>
+<div class="item">
+  <div class="item-name">WHISKY JACK DANIEL'S</div>
+  <div class="item-price">Dose: R$ 26,90 | Garrafa: R$ 324,90</div>
+</div>
+<div class="item">
+  <div class="item-name">WHISKY JACK DANIEL'S HONEY</div>
+  <div class="item-price">Dose: R$ 26,90 | Garrafa: R$ 374,90</div>
+</div>
+<div class="item">
+  <div class="item-name">WHISKY JACK FIRE</div>
+  <div class="item-price">Dose: R$ 26,90 | Garrafa: R$ 324,90</div>
+</div>
+<div class="item">
+  <div class="item-name">WHISKY JOHNNIE WALKER BLACK</div>
+  <div class="item-price">Dose: R$ 28,90 | Garrafa: R$ 374,90</div>
+</div>
+<div class="item">
+  <div class="item-name">WHISKY JOHNNIE WALKER RED</div>
+  <div class="item-price">Dose: R$ 16,90 | Garrafa: R$ 179,90</div>
+</div>
+<div class="item">
+  <div class="item-name">WHISKY OLD PARR 12 ANOS</div>
+  <div class="item-price">Dose: R$ 28,90 | Garrafa: R$ 369,90</div>
+</div>
+</div>
+    <button id="btnTopo" title="Voltar ao topo">↑ Topo</button>
+  </div>
+
+  <script>
+    // Função para abrir e fechar o menu deslizante
+    function toggleMenu() {
+  const menu = document.getElementById("menu");
+  const body = document.body;
+
+  if (menu.classList.contains("open")) {
+    menu.classList.remove("open");
+    body.classList.remove("menu-open"); // Destrava o scroll
+  } else {
+    menu.classList.add("open");
+    body.classList.add("menu-open"); // Travando o scroll
+  }
+}
+
+// Fechar o menu ao clicar em um link
+document.querySelectorAll(".menu a").forEach(link => {
+  link.addEventListener("click", function () {
+    document.getElementById("menu").classList.remove("open");
+    document.body.classList.remove("menu-open"); // Destrava o scroll
+  });
+});
+
+
+    // Correção do botão "Voltar ao Topo"
+    const btnTopo = document.getElementById("btnTopo");
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 200) {
+        btnTopo.style.display = "block";
+      } else {
+        btnTopo.style.display = "none";
+      }
+    });
+
+    btnTopo.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+
+</body>
+</html>
+
